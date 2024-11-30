@@ -1,127 +1,108 @@
 <template>
-    <div class="form-container">
-      <h2>Formulario de Ejemplo</h2>
-      <form @submit.prevent="handleSubmit">
-        <!-- Campo de Texto -->
-        <div class="form-group">
-          <label for="nombre">Nombre:</label>
-          <input 
-            type="text" 
-            id="nombre" 
-            v-model="formData.nombre" 
-            placeholder="Ingresa tu nombre"
-            required 
-          />
-        </div>
-  
-        <!-- Campo de Email -->
-        <div class="form-group">
-          <label for="email">Correo Electrónico:</label>
-          <input 
-            type="email" 
-            id="email" 
-            v-model="formData.email" 
-            placeholder="Ingresa tu correo"
-            required 
-          />
-        </div>
-  
-        <!-- Campo de Selección -->
-        <div class="form-group">
-          <label for="categoria">Categoría:</label>
-          <select id="categoria" v-model="formData.categoria">
-            <option value="" disabled>Selecciona una opción</option>
-            <option value="opcion1">Opción 1</option>
-            <option value="opcion2">Opción 2</option>
-            <option value="opcion3">Opción 3</option>
-          </select>
-        </div>
-  
-        <!-- Botón de Envío -->
-        <button type="submit" class="submit-button">Enviar</button>
-      </form>
-  
-      <!-- Mostrar los datos ingresados (para pruebas) -->
-      <div v-if="formSubmitted" class="results">
-        <h3>Datos Enviados:</h3>
-        <p><strong>Nombre:</strong> {{ formData.nombre }}</p>
-        <p><strong>Correo:</strong> {{ formData.email }}</p>
-        <p><strong>Categoría:</strong> {{ formData.categoria }}</p>
+  <div class="container mt-5">
+    <h2 class="text-center mb-4">Formulario de Bodega</h2>
+    <form @submit.prevent="handleSubmit" class="needs-validation" novalidate>
+      <!-- Nombre de la Bodega -->
+      <div class="mb-3">
+        <label for="nombreBodega" class="form-label">Nombre de la Bodega:</label>
+        <input 
+          type="text" 
+          class="form-control" 
+          id="nombreBodega" 
+          v-model="formData.nombreBodega" 
+          placeholder="Ingrese el nombre de la bodega"
+          required
+        />
       </div>
-    </div>
-  </template>
-  
-  <script setup>
-  import { ref } from 'vue';
-  
-  // Datos del formulario
-  const formData = ref({
-    nombre: '',
-    email: '',
-    categoria: '',
+
+      <!-- Ubicación -->
+      <div class="mb-3">
+        <label class="form-label">Ubicación:</label>
+        <div class="row g-2">
+          <div class="col-md-4">
+            <select class="form-select" v-model="formData.departamento" required>
+              <option value="" disabled>Departamento</option>
+              <option value="Antioquia">Antioquia</option>
+              <option value="Cundinamarca">Cundinamarca</option>
+              <option value="Valle del Cauca">Valle del Cauca</option>
+            </select>
+          </div>
+          <div class="col-md-4">
+            <select class="form-select" v-model="formData.ciudad" required>
+              <option value="" disabled>Ciudad</option>
+              <option value="Medellín">Medellín</option>
+              <option value="Bogotá">Bogotá</option>
+              <option value="Cali">Cali</option>
+            </select>
+          </div>
+          <div class="col-md-4">
+            <input 
+              type="text" 
+              class="form-control" 
+              placeholder="Dirección" 
+              v-model="formData.direccion" 
+              required 
+            />
+          </div>
+        </div>
+      </div>
+
+      <!-- Teléfono -->
+      <div class="mb-3">
+        <label for="telefono" class="form-label">Teléfono:</label>
+        <input 
+          type="tel" 
+          class="form-control" 
+          id="telefono" 
+          v-model="formData.telefono" 
+          placeholder="Ingrese el número de teléfono" 
+          required
+        />
+      </div>
+
+      <!-- Nombre del Administrador -->
+      <div class="mb-3">
+        <label for="nombreAdmin" class="form-label">Nombre del Administrador:</label>
+        <input 
+          type="text" 
+          class="form-control" 
+          id="nombreAdmin" 
+          v-model="formData.nombreAdmin" 
+          placeholder="Ingrese el nombre del administrador" 
+          required
+        />
+      </div>
+
+      <!-- Botón de Envío -->
+      <button type="submit" class="btn btn-primary w-100">Enviar</button>
+    </form>
+  </div>
+</template>
+
+<script setup>
+import { ref } from 'vue';
+import Swal from 'sweetalert2';
+
+// Datos del formulario
+const formData = ref({
+  nombreBodega: '',
+  departamento: '',
+  ciudad: '',
+  direccion: '',
+  telefono: '',
+  nombreAdmin: '',
+});
+
+// Función para manejar el envío del formulario
+const handleSubmit = () => {
+  // Mostrar SweetAlert de éxito
+  Swal.fire({
+    icon: 'success',
+    title: 'Formulario Enviado',
+    text: 'Los datos se enviaron correctamente.',
+    confirmButtonText: 'Aceptar',
   });
-  
-  const formSubmitted = ref(false);
-  
-  // Función para manejar el envío del formulario
-  const handleSubmit = () => {
-    formSubmitted.value = true;
-    console.log('Datos enviados:', formData.value);
-  };
-  </script>
-  
-  <style scoped>
-  .form-container {
-    max-width: 400px;
-    margin: 0 auto;
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  }
-  
-  h2 {
-    text-align: center;
-    margin-bottom: 20px;
-  }
-  
-  .form-group {
-    margin-bottom: 15px;
-  }
-  
-  label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: bold;
-  }
-  
-  input, select {
-    width: 100%;
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-  }
-  
-  .submit-button {
-    width: 100%;
-    padding: 10px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-  
-  .submit-button:hover {
-    background-color: #0056b3;
-  }
-  
-  .results {
-    margin-top: 20px;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    background-color: #f9f9f9;
-  }
-  </style>
-  
+
+  console.log('Datos enviados:', formData.value);
+};
+</script>
